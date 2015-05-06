@@ -159,8 +159,9 @@ module Faker
         translate('faker.lorem.punctuation_end').sample
       end
 
-      def connect
-        translate('faker.lorem.punctuation_connect').sample
+      def connect normal=0
+        connectors = translate('faker.lorem.punctuation_connect')
+        normal ? connectors.last : connectors.sample
       end
 
       def separator

@@ -20,13 +20,13 @@ module Faker
       end
 
       def product_name
-        fetch('commerce.product_name.adjective') + ' ' + fetch('commerce.product_name.material') + ' ' + fetch('commerce.product_name.product')
+        fetch('commerce.product_name.adjective') + separator + fetch('commerce.product_name.material') + separator + fetch('commerce.product_name.product')
       end
 
       def price
         random = Random.new
         (random.rand(0..100.0) * 100).floor/100.0
-      end    
+      end
 
       private
 
@@ -42,7 +42,7 @@ module Faker
 
       def merge_categories(categories)
         separator = fetch('separator')
-        comma_separated = categories.slice!(0...-1).join(', ')
+        comma_separated = categories.slice!(0...-1).join(connect(1))
 
         [comma_separated, categories[0]].join(separator)
       end
