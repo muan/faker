@@ -153,6 +153,23 @@ module Faker
         from, to = to, from if to < from
         Random.new.rand(from..to)
       end
+
+      # Language helpers
+      def ending
+        translate('faker.lorem.punctuation_end').sample
+      end
+
+      def connect
+        translate('faker.lorem.punctuation_connect').sample
+      end
+
+      def separator
+        translate('faker.lorem.separator')
+      end
+
+      def word_duplicator
+        translate('faker.lorem.duplicator')
+      end
     end
   end
 end

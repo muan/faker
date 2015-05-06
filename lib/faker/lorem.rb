@@ -6,6 +6,10 @@ module Faker
         translate('faker.lorem.words').sample
       end
 
+      def term
+        [[word, word], [word, word, word]].sample.join(separator)
+      end
+
       def words(num = 3, supplemental = false)
         resolved_num = resolve(num)
         word_list = (
@@ -27,7 +31,7 @@ module Faker
       end
 
       def sentence(word_count = 4, supplemental = false, random_words_to_add = 6)
-        words(word_count + rand(random_words_to_add.to_i).to_i, supplemental).join(' ').capitalize + '.'
+        words(word_count + rand(random_words_to_add.to_i).to_i, supplemental).join(separator).capitalize + ending
       end
 
       def sentences(sentence_count = 3, supplemental = false)
@@ -39,7 +43,7 @@ module Faker
       end
 
       def paragraph(sentence_count = 3, supplemental = false, random_sentences_to_add = 3)
-        sentences(resolve(sentence_count) + rand(random_sentences_to_add.to_i).to_i, supplemental).join(' ')
+        sentences(resolve(sentence_count) + rand(random_sentences_to_add.to_i).to_i, supplemental).join(separator)
       end
 
       def paragraphs(paragraph_count = 3, supplemental = false)
@@ -58,7 +62,7 @@ module Faker
         case value
         when Array then value[rand(value.size)]
         when Range then rand((value.last+1) - value.first) + value.first
-        else value
+        else value*word_duplicator
         end
       end
     end
