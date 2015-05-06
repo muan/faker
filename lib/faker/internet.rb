@@ -1,4 +1,6 @@
 # encoding: utf-8
+require 'stringex'
+
 module Faker
   class Internet < Base
     class << self
@@ -16,7 +18,7 @@ module Faker
 
       def user_name(specifier = nil, separators = %w(. _))
         if specifier.kind_of? String
-          return specifier.scan(/\w+/).shuffle.join(separators.sample).downcase
+          return specifier.to_url.scan(/\w+/).shuffle.join(separators.sample).downcase
         elsif specifier.kind_of? Integer
           tries = 0 # Don't try forever in case we get something like 1_000_000.
           begin
@@ -37,9 +39,9 @@ module Faker
         end
 
         fix_umlauts([
-          Proc.new { Name.first_name.gsub(/\W/, '').downcase },
+          Proc.new { Name.first_name.to_url.gsub(/\W/, '').downcase },
           Proc.new {
-            [ Name.first_name, Name.last_name ].map {|n|
+            [ Name.first_name.to_url, Name.last_name.to_url ].map {|n|
               n.gsub(/\W/, '')
             }.join(separators.sample).downcase }
         ].sample.call)
@@ -62,17 +64,17 @@ module Faker
 
       def fix_umlauts(string)
         string.gsub(/[äöüß]/i) do |match|
-            case match.downcase
-                when "ä" 'ae'
-                when "ö" 'oe'
-                when "ü" 'ue'
-                when "ß" 'ss'
-            end
+          case match.downcase
+              when "ä" 'ae'
+              when "ö" 'oe'
+              when "ü" 'ue'
+              when "ß" 'ss'
+          end
         end
       end
 
       def domain_word
-        Company.name.split(' ').first.gsub(/\W/, '').downcase
+        Company.name.to_url.gsub(/\W/, '').downcase
       end
 
       def domain_suffix
